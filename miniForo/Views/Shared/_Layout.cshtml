@@ -30,7 +30,19 @@
                         Register/Log In
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Register</a>
+                        @Html.ActionLink("log in", "createUser",
+
+                            new
+                            {
+                                controller = "Users"
+                            },
+
+                            new
+                            {
+                                @class = "dropdown-item"
+                            }
+
+                       )
                         <a class="dropdown-item" href="#" style="float:right;">Log in</a>
                                                
                     </div>
