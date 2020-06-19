@@ -9,8 +9,9 @@ namespace miniForo.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Index()
+        public ActionResult landing()
         {
+            ViewBag.style = "landing.css";
             return View();
         }
     }
