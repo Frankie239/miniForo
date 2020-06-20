@@ -32,5 +32,11 @@ namespace miniForo.Controllers
 
 
         }
+
+        public ActionResult CreateEntry()
+        {
+
+            return View();
+        }
     }
 }
