@@ -1,0 +1,32 @@
+﻿
+
+
+<style>
+    .wrapper{
+        display:grid;
+        grid-template-columns:10% 80% 10%;
+        grid-template-rows:20% auto;
+
+    }
+    #header{
+        grid-column:2;
+        grid-row:1/2;
+    }
+    #text{
+        grid-column:2;
+        grid-row:2/3;
+    }
+
+</style>
+<div class="wrapper>
+
+    <div id="header">
+        <h1>@ViewBag.title</h1>
+        <h3>@ViewBag.userTag</h3>
+    </div>
+
+    <div id="text">
+        <p>@ViewBag.text</p>
+    </div>
+
+</div>

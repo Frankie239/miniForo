@@ -12,7 +12,19 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">MiniForum</a>
+        @Html.ActionLink("MiniForum", "landing",
+
+                       new
+                       {
+                           controller = "Home"
+                       },
+
+                       new
+                       {
+                           @class = "navbar-brand"
+                       }
+        )
+        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -23,14 +35,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Register/Log In
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @Html.ActionLink("log in", "createUser",
+                    @Html.ActionLink("Register", "createUser",
 
                             new
                             {
@@ -39,14 +44,34 @@
 
                             new
                             {
-                                @class = "dropdown-item"
+                                @class = "nav-link"
                             }
 
                        )
-                        <a class="dropdown-item" href="#" style="float:right;">Log in</a>
-                                               
-                    </div>
                 </li>
+                <!-- Esto se tiene que ir a la mierda seguramente @*<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Register/Log In
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            @Html.ActionLink("log in", "createUser",
+
+                new
+                {
+                    controller = "Users"
+                },
+
+                new
+                {
+                    @class = "dropdown-item"
+                }
+
+           )
+            <a class="dropdown-item" href="#" style="float:right;">Log in</a>
+
+        </div>
+    </li>*@ -->
+
 
             </ul>
             <form class="form-inline my-2 my-lg-0">

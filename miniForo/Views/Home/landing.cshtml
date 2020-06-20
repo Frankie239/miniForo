@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Landing";
 }   
+@model miniForo.Models.dbDummyUser
 
 
     <style>
@@ -38,7 +39,7 @@
         <button type="button" id="agregar" class="btn btn-primary btn-lg">Add Entry</button>
         <table class="table table-striped">
             <thead>
-                <tr>
+                <tr >
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">UserTag</th>
@@ -48,10 +49,10 @@
             <tbody>
 
 
-                <tr>
-                    <th scope="row">Lorem</th>
-                    <td>Lorem ipsum dolor sit</td>
-                    <td>Francisquitus</td>
+                <tr onclick= "location.href ='@(Url.Action("LoadEntry", "Home"))'">
+                    <th scope="row">@ViewBag.title</th>
+                    <td>@ViewBag.description</td>
+                    <td>@ViewBag.userTag</td>
                     <td>19/6/2020-10:36 GTM-3</td> <!--Esto aca va a ser el User tag, pero no se puede poner arroba porque es razor-->
                 </tr>
 
@@ -70,24 +71,24 @@
 
         </table>
 
-
-        <form>
+        @using (Html.BeginForm("LogIn", "Users", FormMethod.Post))
+        {
+            <h2>Log In: </h2>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                @Html.TextBoxFor(m => m.password, new { @class = "form-control" })
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-
-
-
+            
+        }
+        
     </div>
