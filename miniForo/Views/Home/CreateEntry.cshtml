@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "CreateEntry";
+}
+@model miniForo.Models.DAL.Entry
+
+@using (Html.BeginForm("CreateEntry", "Home", FormMethod.Post))
+{
+    <label for="exampleInputEmail1">Title:</label>
+    @Html.TextBoxFor(m => m.title, new { @class = "form-control" })
+
+    <label for="exampleInputEmail1">A little Description</label>
+    @Html.TextBoxFor(m => m.description, new { @class = "form-control" })
+    <label for="exampleInputEmail1">Your text goes here:</label>
+    @Html.TextAreaFor(m => m.text, new { @class = "" })
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+}
+
+@ViewBag.texto

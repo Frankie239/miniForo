@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using miniForo.Models.DAL;
+using System.Security.Cryptography.Xml;
 
 namespace miniForo.Controllers
 {
@@ -32,9 +34,27 @@ namespace miniForo.Controllers
 
 
         }
-
+        [HttpGet]
         public ActionResult CreateEntry()
         {
+
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateEntry(Entry entry)
+        {
+            entry.userId = "@FranGimen";
+
+            using (BlogContext db = new BlogContext())
+            {
+                db.Entry.Add(entry);
+                db.SaveChanges();
+
+            }
+
 
             return View();
         }
