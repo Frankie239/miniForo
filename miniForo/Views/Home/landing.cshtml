@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Landing";
 }   
-@model miniForo.Models.dbDummyUser
+
 
 
     <style>
@@ -36,10 +36,10 @@
     <div class="wrapper">
 
         <h1>Welcome Back @*ViewModel.userTag*@Francisquitus </h1><!--Esto esta comentado-->
-        <button onclick= "location.href ='@(Url.Action("CreateEntry", "Home"))'" type="button" id="agregar" class="btn btn-primary btn-lg">Add Entry</button>
+        <button onclick="location.href ='@(Url.Action("CreateEntry", "Home"))'" type="button" id="agregar" class="btn btn-primary btn-lg">Add Entry</button>
         <table class="table table-striped">
             <thead>
-                <tr >
+                <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">UserTag</th>
@@ -49,7 +49,7 @@
             <tbody>
 
 
-                <tr onclick= "location.href ='@(Url.Action("LoadEntry", "Home"))'">
+                <tr onclick="location.href ='@(Url.Action("LoadEntry", "Home"))'">
                     <th scope="row">@ViewBag.title</th>
                     <td>@ViewBag.description</td>
                     <td>@ViewBag.userTag</td>
@@ -76,20 +76,28 @@
             <h2>Log In: </h2>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+                <input type="email" name="email" value="" class="form-control" />
 
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
-                @Html.TextBoxFor(m => m.password, new { @class = "form-control" })
+                <input type="password" name="password" value="" class="form-control" />
+
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            
-        }
-       
+
         
+            <button type="submit" class="btn btn-primary">Submit</button>
+     
+          
+
+
+
+
+            }
+
+
     </div>
