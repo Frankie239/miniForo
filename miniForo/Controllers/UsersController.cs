@@ -1,9 +1,12 @@
 ﻿using miniForo.Models.DAL;
 using System;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Security;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.UI;
+using System.Web.Security;
 
 namespace miniForo.Controllers
 {
@@ -80,7 +83,7 @@ namespace miniForo.Controllers
             }
 
         }
-        /* Log in method(Not working)
+        /* Log in method(Not working)*/
         [HttpPost]
         public ActionResult LogIn(string email, string password)
         {
@@ -88,15 +91,20 @@ namespace miniForo.Controllers
             Password pass = new Password();
             string message = "";
             ViewBag.message = message;
-            
+            string Upass = "";
+            string Uemail = "";
 
+            password = Encrypt(password);
 
 
             using (BlogContext db = new BlogContext())
             {
 
-                user = db.User.FirstOrDefault(e => e.email == email);
-                //pass = db.Password.SqlQuery("SELECT password FROM [Password] WHERE [userId] = @tag", user.userTag);
+                var usuario = db.User.Where(b => b.email == email).FirstOrDefault();
+                var passw = db.Password.Where(p => p.userId == usuario.userTag).FirstOrDefault();
+
+                Upass = passw.password1;
+                Uemail = usuario.email;
 
 
 
@@ -106,9 +114,9 @@ namespace miniForo.Controllers
          
 
 
-            if(user.email == email)
+            if(Uemail == email)
             {
-                if(password == password)
+                if(Upass == password)
                 {
                     FormsAuthentication.SetAuthCookie(user.email, true);
                     return RedirectToAction("UserLogedIn", "Profile");
@@ -125,7 +133,7 @@ namespace miniForo.Controllers
             }
             //Esto es si todo sale bien, recarga la pagina de home
             return RedirectToAction("Landing", "Home");
-        }*/
+        }
     }
 
 }
