@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.Security;
 using System.Web;
+using System.Data.SqlClient;
 
 namespace miniForo.Controllers
 {
@@ -54,47 +55,51 @@ namespace miniForo.Controllers
         [HttpPost]
         public ActionResult createUser(User newUser, string emailRepeat, string password)
         {
-            Password passWordEncrypted = new Password();
+            Password passWordEncrypted = new Password(); //Creo un nuevo objeto password para luego insertarlo en la base de datos
 
             string action = "Landing";
             string controller = "Home";
-            ViewBag.message = "User successfully registered";
-            ViewData["state"] = true;
+            Session["message"] = null; //por default el mensaje es null para que pueda entrar y mostrarse en el momento que realmente haya alg que mostrar
+            
 
-            if (emailRepeat == newUser.email)
+            if (emailRepeat == newUser.email) //Si el email es igual al repetido
             {
-                passWordEncrypted.userId = newUser.userTag;
+                passWordEncrypted.userId = newUser.userTag; // le asigno el user tag al elemento pasword para insertarlo con la FK
                 passWordEncrypted.password1 = Encrypt(password); //encriptando la contraseña para guardarla como hash
-                newUser.creationDate = DateTime.Now.Date;
+                newUser.creationDate = DateTime.Now.Date; //Le doy una fecha de creacion para que luego quede bonito y diga cuand se creó
+
 
 
                 using (BlogContext db = new BlogContext())
                 {
-                    db.User.Add(newUser);
-                    db.Password.Add(passWordEncrypted);
+                    db.User.Add(newUser); //Agrego primero el usuario por la fk
+                    db.Password.Add(passWordEncrypted); //Luego la password
                     try
                     {
-                        db.SaveChanges();
+                        db.SaveChanges(); //Esto esta aca porque si en el caso de que algo se rompa en el insert, no se rompa toda la app
                     }
-                    catch(Exception)
+                    catch(SqlException)
                     {
-                        ViewBag.message = "Something went wrong during saving your data, please try again";
+                        Session["message"] = "Something went wrong during saving your data, please try again";
                     }
 
                     finally
                     {
-                        action = "CreateUser";
+                        
+                        action = "logIn"; //Le pongo estos valores a la redireccion. 
                         controller = "Users";
                         
                     }
                 }
+
+               
                 //return View();
-                return RedirectToAction(action, controller);
+                return RedirectToAction(action, controller); //si el codigo llego hasta aca sin problemas, deberia redirigir al login
             }
             else
             {
-                ViewBag.message = "the two emails do not match";
-                return RedirectToAction("createUser", "Users");
+                Session["message"] = "the two emails do not match";
+                return RedirectToAction("createUser", "Users"); //Si hubo problemas, vendria para aca y de vuelta a registrase con el mensaje de error
             }
 
         }

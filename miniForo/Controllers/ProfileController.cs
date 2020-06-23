@@ -16,8 +16,10 @@ namespace miniForo.Controllers
         /// Aca va todo lo que se hace con el perfil, editar cosas del perfil y demas.
         /// </summary>
         /// <returns></returns>
-        public ActionResult UserLogedIn()
+        public ActionResult ModifyProfile()
         {
+            throw new NotImplementedException();
+
             return View();
         }
       
