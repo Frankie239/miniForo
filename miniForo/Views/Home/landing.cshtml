@@ -36,7 +36,7 @@
     <div class="wrapper">
         @{HttpCookie userCookie = Request.Cookies["UserCookie"];} 
 
-        <h1>Welcome Back @userCookie.Value.ToString()! </h1>
+        <h1>Welcome Back @userCookie.Value! </h1>
         <button onclick="location.href ='@(Url.Action("CreateEntry", "Home"))'" type="button" id="agregar" class="btn btn-primary btn-lg">Add Entry</button>
         <table class="table table-striped">
             <thead>
