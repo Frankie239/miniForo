@@ -9,12 +9,18 @@ using System.Security.Cryptography.Xml;
 
 namespace miniForo.Controllers
 {
+    [Authorize] //Esto hace que solamente sea posible entrar a estos metodos si estas registrado
     public class HomeController : Controller
     {
         // GET: Home
+        /// <summary>
+        /// This is the first method that you are redirectioned when you can succesfully sing in
+        /// </summary>
+        /// <returns>Void</returns>
         public ActionResult landing()
         {
-            ViewBag.title = "LOREM IMPSUM";
+            //Esto es un decoy, realmente no son valores que funcionen, estan hardcodeados(por ahora)
+            ViewBag.title = "LOREM IMPSUM"; 
             ViewBag.description = "a little description over here";
             ViewBag.text = "Probando probando probando probando probando.";
             ViewBag.userTag = "@FranGimen";
@@ -22,10 +28,13 @@ namespace miniForo.Controllers
          
             return View();
         }
-
+        /// <summary>
+        /// This method is called when you click in a <tr>
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LoadEntry()
         {
-            ViewBag.title = "LOREM IMPSUM";
+            ViewBag.title = "LOREM IMPSUM"; 
             ViewBag.description ="a little description over here";
             ViewBag.text = "Probando probando probando probando probando.";
             ViewBag.userTag ="@FranGimen";
@@ -34,6 +43,10 @@ namespace miniForo.Controllers
 
 
         }
+        /// <summary>
+        /// This loads the view to create a new forum entry
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult CreateEntry()
         {
@@ -42,11 +55,16 @@ namespace miniForo.Controllers
 
             return View();
         }
-
+        /// <summary>
+        /// This method compiles all the information from the entry recently created and inserts it into the db.
+        /// 
+        /// </summary>
+        /// <param name="entry">A EF generated object, passed into the function via HTTP POST</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult CreateEntry(Entry entry)
         {
-            entry.userId = "@FranGimen";
+            entry.userId = Session["userName"].ToString(); //
 
             using (BlogContext db = new BlogContext())
             {

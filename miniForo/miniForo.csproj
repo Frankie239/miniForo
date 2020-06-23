@@ -150,6 +150,7 @@
     <Content Include="Views\Home\loadEntry.cshtml" />
     <Content Include="Views\Home\CreateEntry.cshtml" />
     <Content Include="Views\Profile\UserLogedIn.cshtml" />
+    <Content Include="Views\Users\LogIn.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

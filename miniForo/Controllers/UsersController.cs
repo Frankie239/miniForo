@@ -12,6 +12,11 @@ namespace miniForo.Controllers
 {
     public class UsersController : Controller
     {
+        /// <summary>
+        /// This method Encrypts the password in a MD5 HASH
+        /// </summary>
+        /// <param name="password">the password string to be converted to MD5 HASH</param>
+        /// <returns>string</returns>
         public string Encrypt(string password)
         {
             StringBuilder hash = new StringBuilder();
@@ -28,15 +33,24 @@ namespace miniForo.Controllers
         }
         // GET: Users
 
+        /// <summary>
+        /// Method that loads the page to create a new user
+        /// </summary>
+        /// <returns></returns>
         public ActionResult createUser()
         {
 
             return View();
         }
 
+        /// <summary>
+        /// This method compiles and compares all the information to create a user with almost no errors
+        /// </summary>
+        /// <param name="newUser"> object created by EF of user</param>
+        /// <param name="emailRepeat"> a email repetition</param>
+        /// <param name="password">As the password is no directly attached to the user, i used a parameter </param>
+        /// <returns></returns>
         [HttpPost]
-        //Añadido del metodo de creacion de usuarios
-        //Pero falta hacer que se validen bien y que tire un error.
         public ActionResult createUser(User newUser, string emailRepeat, string password)
         {
             Password passWordEncrypted = new Password();
@@ -83,7 +97,19 @@ namespace miniForo.Controllers
             }
 
         }
-        /* Log in method(Not working)*/
+        /// <summary>
+        /// Log in method, this compares the email and the password(previusly encrypted) against
+        /// the corresponding database tables.
+        /// </summary>
+        /// <param name="email">user email</param>
+        /// <param name="password"> user password</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult LogIn()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult LogIn(string email, string password)
         {
@@ -114,10 +140,10 @@ namespace miniForo.Controllers
                     Uemail = usuario.email;
 
                 }
-                catch (System.Reflection.TargetException)
+                catch (System.Reflection.TargetException) //si no llegas a encontrar alguno de los campos que te pase aca
                 {
                     Session["message"] = "Incorrect Credentials";
-                    return RedirectToAction("Landing", "Home");
+                    return View(); //recarga la pagina de log in
                 }
                
 
@@ -134,12 +160,12 @@ namespace miniForo.Controllers
                 if (Upass == password)
                 {
                     FormsAuthentication.SetAuthCookie(user.email, true);
-                    return RedirectToAction("UserLogedIn", "Profile");
+                    return RedirectToAction("Landing", "Home");
                 }
                 else
                 {
                     Session["message"] = "Incorrect Password";
-                    return RedirectToAction("Landing", "Home");
+                    return View();
                 }
 
             }
@@ -148,7 +174,7 @@ namespace miniForo.Controllers
             {
                 Session["message"] = "Incorrect Email";
 
-                return RedirectToAction("LogIn");
+                return View();
 
 
 
