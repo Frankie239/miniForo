@@ -7,6 +7,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.Security;
+using System.Web;
 
 namespace miniForo.Controllers
 {
@@ -123,6 +124,9 @@ namespace miniForo.Controllers
 
             password = Encrypt(password);
 
+            HttpCookie userTagCk = new HttpCookie("UserCookie");
+
+            userTagCk.Expires.AddYears(50);
 
             using (BlogContext db = new BlogContext())
             {
@@ -135,7 +139,7 @@ namespace miniForo.Controllers
                     var passw = db.Password.Where(p => p.userId == usuario.userTag).FirstOrDefault();
                     Upass = passw.password1;
 
-                    Session["UserName"] = usuario.userTag;
+                    userTagCk.Value = usuario.userTag;
 
                     Uemail = usuario.email;
 
@@ -160,7 +164,9 @@ namespace miniForo.Controllers
                 if (Upass == password)
                 {
                     FormsAuthentication.SetAuthCookie(user.email, true);
+                    Response.Cookies.Add(userTagCk);
                     return RedirectToAction("Landing", "Home");
+                    
                 }
                 else
                 {
@@ -185,7 +191,7 @@ namespace miniForo.Controllers
 
         }
 
-
+        [Authorize]
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();

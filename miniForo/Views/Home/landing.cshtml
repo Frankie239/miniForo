@@ -9,33 +9,34 @@
 
         .wrapper {
             display: grid;
-            grid-template-columns: 70% 30%;
+            grid-template-columns:  10% 80% 10%;
             grid-template-rows: auto auto auto auto;
             gap:2%;
         }
 
         table {
-            grid-column: 1/2;
+            grid-column: 2/3;
             grid-row: 3/4;
         }
 
-        form {
-            grid-column: 2/3;
-            grid-row: 2/4;
-        }
+       
         #agregar {
         
-            grid-column: 1/2;
+            grid-column: 2/3;
             grid-row: 2;
             height: 69px;
             width: 162px;
     
         }
+        h1{
+            grid-column:2/3;
+        }
 
     </style>
     <div class="wrapper">
+        @{HttpCookie userCookie = Request.Cookies["UserCookie"];} 
 
-        <h1>Welcome Back @Session["UserName"] ! </h1>
+        <h1>Welcome Back @userCookie.Value.ToString()! </h1>
         <button onclick="location.href ='@(Url.Action("CreateEntry", "Home"))'" type="button" id="agregar" class="btn btn-primary btn-lg">Add Entry</button>
         <table class="table table-striped">
             <thead>
@@ -71,43 +72,7 @@
 
         </table>
         <!--Meter esto en una nueva vista, dedicada a esto y que sea la pagina por default cuando entras al foro-->
-        @if (!User.Identity.IsAuthenticated)
-        {
-            using (Html.BeginForm("LogIn", "Users", FormMethod.Post))
-            {
-                <h2>Log In: </h2>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" name="email" value="@null" class="form-control" />
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" value="@null" class="form-control" />
-
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                if (Session["message"] != null)
-                {
-                    <div class="alert alert-danger">
-                        @Session["message"]
-                    </div>
-                }
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-
-
-
-
-
-
-            }
-
-        }
-
+     
 
 
     </div>

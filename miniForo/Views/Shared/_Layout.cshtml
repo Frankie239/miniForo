@@ -34,7 +34,7 @@
 
 
 
-                @if (User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated) /*Esto hace que si estas registrado puedas entrar nada mas*/
                 {
                     <li class="nav-item">
                         @Html.ActionLink("Log Out", "LogOut",
@@ -55,12 +55,12 @@
 
                     <li class="nav-item">
                         @Html.ActionLink("Profile", "Management",
-                            /*
+                            
                              new
                              {
                                  controller = "Users"
-                             }
-                             */
+                             },
+                             
 
                              new
                              {
@@ -79,7 +79,7 @@
                 else
                 {
                     <li class="nav-item">
-                        @Html.ActionLink("Register", "createUser",
+                        @Html.ActionLink("Register", "createUser", /*Si no estas registrado, te aparece par crear uno */
 
                              new
                              {
@@ -99,7 +99,7 @@
 
             </ul>
 
-            @if (User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated) //Tambien si estas registrado aparece este botoncito de buscar
             {
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
