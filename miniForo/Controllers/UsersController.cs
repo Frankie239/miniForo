@@ -90,9 +90,10 @@ namespace miniForo.Controllers
             User user = new User();
             Password pass = new Password();
             string message = "";
-            ViewBag.message = message;
+            Session["userName"] = null;
             string Upass = "";
             string Uemail = "";
+            
 
             password = Encrypt(password);
 
@@ -100,40 +101,73 @@ namespace miniForo.Controllers
             using (BlogContext db = new BlogContext())
             {
 
-                var usuario = db.User.Where(b => b.email == email).FirstOrDefault();
-                var passw = db.Password.Where(p => p.userId == usuario.userTag).FirstOrDefault();
+                
+                try
+                {
 
-                Upass = passw.password1;
-                Uemail = usuario.email;
+                    var usuario = db.User.Where(b => b.email == email).FirstOrDefault();
+                    var passw = db.Password.Where(p => p.userId == usuario.userTag).FirstOrDefault();
+                    Upass = passw.password1;
 
+                    Session["UserName"] = usuario.userTag;
+
+                    Uemail = usuario.email;
+
+                }
+                catch (System.Reflection.TargetException)
+                {
+                    Session["message"] = "Incorrect Credentials";
+                    return RedirectToAction("Landing", "Home");
+                }
+               
+
+
+              
 
 
 
 
             }
-         
 
-
-            if(Uemail == email)
+            if (Uemail == email)
             {
-                if(Upass == password)
+                if (Upass == password)
                 {
                     FormsAuthentication.SetAuthCookie(user.email, true);
                     return RedirectToAction("UserLogedIn", "Profile");
                 }
-              
+                else
+                {
+                    Session["message"] = "Incorrect Password";
+                    return RedirectToAction("Landing", "Home");
+                }
+
             }
-           
+
             else
             {
-                message = "User or credentials not found or credentials incorrect";
-                //throw new UserNotFoundException();
-                
+                Session["message"] = "Incorrect Email";
+
+                return RedirectToAction("LogIn");
+
+
 
             }
             //Esto es si todo sale bien, recarga la pagina de home
+
+
+
+        }
+
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
             return RedirectToAction("Landing", "Home");
         }
+
+
+
     }
 
 }
