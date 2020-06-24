@@ -19,11 +19,29 @@ namespace miniForo.Controllers
         /// <returns>Void</returns>
         public ActionResult landing()
         {
+            using (BlogContext db = new BlogContext())
+            {
+                for (int i = 0; i < db.Entry.Count(); i++)
+                {
+                    var title = db.Entry.Select(t => t.title).FirstOrDefault();
+                    var description = db.Entry.Select(d => d.description).FirstOrDefault();
+                    var text = db.Entry.Select(t => t.text).FirstOrDefault();
+                    var userTag = db.Entry.Select(u => u.userId).FirstOrDefault();
+
+                    ViewBag.title = title;
+                    ViewBag.description = description;
+                    ViewBag.text = text;
+                    ViewBag.userTag = userTag;
+                }
+
+                    
+                
+            }
             //Esto es un decoy, realmente no son valores que funcionen, estan hardcodeados(por ahora)
-            ViewBag.title = "LOREM IMPSUM"; 
+            /*ViewBag.title = "LOREM IMPSUM"; 
             ViewBag.description = "a little description over here";
             ViewBag.text = "Probando probando probando probando probando.";
-            ViewBag.userTag = "@FranGimen";
+            ViewBag.userTag = "@FranGimen";*/
 
          
             return View();
