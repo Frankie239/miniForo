@@ -64,13 +64,13 @@ namespace miniForo.Controllers
         [HttpPost]
         public ActionResult CreateEntry(Entry entry)
         {
-            entry.userId = Session["userName"].ToString(); //
+            HttpCookie userCookie = Request.Cookies["UserCookie"];
+            entry.userId = userCookie.Value;
 
             using (BlogContext db = new BlogContext())
             {
                 db.Entry.Add(entry);
                 db.SaveChanges();
-
             }
 
 
