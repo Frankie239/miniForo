@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using miniForo.Models.DAL;
 using System.Security.Cryptography.Xml;
+using System.Data.Entity.Core.Common.CommandTrees;
+using System.Web.UI;
 
 namespace miniForo.Controllers
 {
@@ -18,45 +20,62 @@ namespace miniForo.Controllers
         /// </summary>
         /// <returns>Void</returns>
         public ActionResult landing()
-        {
-            using (BlogContext db = new BlogContext())
-            {
-                for (int i = 0; i < db.Entry.Count(); i++)
-                {
-                    var title = db.Entry.Select(t => t.title).FirstOrDefault();
-                    var description = db.Entry.Select(d => d.description).FirstOrDefault();
-                    var text = db.Entry.Select(t => t.text).FirstOrDefault();
-                    var userTag = db.Entry.Select(u => u.userId).FirstOrDefault();
 
-                    ViewBag.title = title;
-                    ViewBag.description = description;
-                    ViewBag.text = text;
-                    ViewBag.userTag = userTag;
-                }
+        {
+            ListingEntry entrys = new ListingEntry();
+            try
+            {
+                using (BlogContext db = new BlogContext())
+                {
 
                     
-                
+
+                    entrys.Listing = db.Entry.SqlQuery("SELECT * FROM [Entry]").ToList();
+                  
+
+
+                }
+
             }
-            //Esto es un decoy, realmente no son valores que funcionen, estan hardcodeados(por ahora)
-            /*ViewBag.title = "LOREM IMPSUM"; 
-            ViewBag.description = "a little description over here";
-            ViewBag.text = "Probando probando probando probando probando.";
-            ViewBag.userTag = "@FranGimen";*/
+
+            catch (Exception)
+            {
+                Session["message"] = "Theres no entrys to load";
+            }
+            
+            
 
          
-            return View();
+            return View(entrys);
         }
         /// <summary>
         /// This method is called when you click in a <tr>
         /// </summary>
         /// <returns></returns>
-        public ActionResult LoadEntry()
+        public ActionResult LoadEntry(int entryId)
         {
-            ViewBag.title = "LOREM IMPSUM"; 
-            ViewBag.description ="a little description over here";
-            ViewBag.text = "Probando probando probando probando probando.";
-            ViewBag.userTag ="@FranGimen";
+            
+            using(BlogContext db = new BlogContext())
+            {
+                try
+                {
+                    Entry found = db.Entry.Find(entryId);
 
+                    ViewBag.title = found.title.ToString();
+                    ViewBag.description = found.description.ToString();
+                    ViewBag.text = found.text.ToString();
+                    ViewBag.userTag = found.userId.ToString();
+
+                }
+                catch
+                {
+
+                }
+
+
+
+            }
+        
             return View();
 
 
@@ -69,9 +88,16 @@ namespace miniForo.Controllers
         public ActionResult CreateEntry()
         {
 
+            if (Request.Cookies["UserCookie"] == null)
+            {
+                return RedirectToAction("LogIn", "Users");
+            }
 
+            else
+            {
+                return View();
+            }
 
-            return View();
         }
         /// <summary>
         /// This method compiles all the information from the entry recently created and inserts it into the db.
@@ -82,9 +108,13 @@ namespace miniForo.Controllers
         [HttpPost]
         public ActionResult CreateEntry(Entry entry)
         {
+            
+          
             HttpCookie userCookie = Request.Cookies["UserCookie"];
+
             entry.userId = userCookie.Value;
 
+            
             using (BlogContext db = new BlogContext())
             {
                 db.Entry.Add(entry);
@@ -92,7 +122,8 @@ namespace miniForo.Controllers
             }
 
 
-            return View();
+            return RedirectToAction("landing", "Home");
+
         }
     }
 }

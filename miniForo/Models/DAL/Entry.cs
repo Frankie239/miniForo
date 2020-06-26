@@ -5,6 +5,7 @@ namespace miniForo.Models.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Security.Permissions;
 
     [Table("Entry")]
     public partial class Entry
@@ -27,5 +28,7 @@ namespace miniForo.Models.DAL
         public int id { get; set; }
 
         public virtual User User { get; set; }
+
+       
     }
 }

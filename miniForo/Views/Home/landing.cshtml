@@ -28,9 +28,19 @@
 
     </style>
     <div class="wrapper">
-        @{HttpCookie userCookie = Request.Cookies["UserCookie"];} 
 
-        <h1>Welcome Back @userCookie.Value! </h1>
+
+
+
+        @model miniForo.Models.ListingEntry
+
+        @{HttpCookie userCookie = Request.Cookies["UserCookie"];}
+
+        @if (Request.Cookies["UserCookie"] != null)
+        {
+            <h1>Welcome Back @userCookie.Value! </h1>
+        }
+    
         <button onclick="location.href ='@(Url.Action("CreateEntry", "Home"))'" type="button" id="agregar" class="btn btn-primary btn-lg">Add Entry</button>
         <table class="table table-striped">
             <thead>
@@ -44,29 +54,32 @@
             <tbody>
 
 
-                <tr onclick="location.href ='@(Url.Action("LoadEntry", "Home"))'">
-                    <th scope="row">@ViewBag.title</th>
-                    <td>@ViewBag.description</td>
-                    <td>@ViewBag.userTag</td>
-                    <td>19/6/2020-10:36 GTM-3</td> <!--Esto aca va a ser el User tag, pero no se puede poner arroba porque es razor-->
-                </tr>
+                @foreach (var entrada in Model.Listing)
+                {
+                    <tr onclick="location.href = '@(Url.Action("LoadEntry", "Home", new { entryId = entrada.id }))'">
+                        <th scope="row">@entrada.title</th>
+                        <td>@entrada.description</td>
+                        <td>@entrada.userId</td>
+                        <td>no hay fecha</td>
 
+                    </tr>
+                }
+
+
+
+                
 
 
                 <!--Stripped rows <3-->
-                <tr>
-                    <th scope="row">Amet</th>
-                    <td>Amet consectetur adipisicing elit.</td>
-                    <td>Nicolainas</td>
-                    <td>19/6/2020-10:36 GTM-3</td>
-                </tr>
+
+
 
 
             </tbody>
 
         </table>
         <!--Meter esto en una nueva vista, dedicada a esto y que sea la pagina por default cuando entras al foro-->
-     
+
 
 
     </div>

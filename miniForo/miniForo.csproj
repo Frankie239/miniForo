@@ -126,7 +126,7 @@
     <Compile Include="Models\DAL\Entry.cs" />
     <Compile Include="Models\DAL\Password.cs" />
     <Compile Include="Models\DAL\User.cs" />
-    <Compile Include="Models\dbDummyEntry.cs" />
+    <Compile Include="Models\ListingEntry.cs" />
     <Compile Include="Models\dbDummyUser.cs" />
     <Compile Include="Models\Exceptions\UserNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

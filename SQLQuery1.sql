@@ -1,0 +1,1 @@
+﻿insert into [Entry](text, description,userId, title)values('Probando', 'Aca','@fran','proban3')
